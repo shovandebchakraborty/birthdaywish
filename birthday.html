@@ -8,11 +8,10 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
       height: 100%;
-      background-color: #000;
+      overflow: hidden;
+      background: linear-gradient(to top, #ffc1cc, #ffe4ec);
       font-family: 'Segoe UI', sans-serif;
-      color: white;
     }
 
     .wish-container {
@@ -21,45 +20,23 @@
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      z-index: 2;
+      z-index: 10;
       opacity: 0;
-      animation: fadeIn 3s ease 2s forwards;
+      animation: fadeIn 2s ease 2s forwards;
       padding: 20px;
       max-width: 90%;
     }
 
     h1 {
       font-size: 60px;
-      color: #ffd700;
-      text-shadow: 0 0 20px #ff4081;
+      color: #e91e63;
+      text-shadow: 2px 2px #fff;
       margin-bottom: 20px;
     }
 
     p {
       font-size: 24px;
-      color: #eee;
-      line-height: 1.5;
-    }
-
-    .blast {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 150px;
-      height: 150px;
-      background: radial-gradient(circle, #ff4081, transparent);
-      border-radius: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      animation: blast 1s ease-out forwards;
-      z-index: 1;
-    }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      display: block;
-      z-index: 0;
+      color: #880e4f;
     }
 
     @keyframes fadeIn {
@@ -68,14 +45,60 @@
       }
     }
 
-    @keyframes blast {
-      to {
-        transform: translate(-50%, -50%) scale(8);
+    /* 🎈 Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 60px;
+      height: 80px;
+      background: radial-gradient(circle at 30% 30%, #f06292, #ec407a);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: floatUp 10s infinite ease-in;
+      box-shadow: inset -5px -10px 0 rgba(0,0,0,0.1);
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #555;
+      transform: translateX(-50%);
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh) rotate(360deg);
         opacity: 0;
       }
     }
 
-    /* 🔧 Responsive Design */
+    /* ✨ Stars */
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.2; transform: scale(1); }
+      to { opacity: 1; transform: scale(1.5); }
+    }
+
+    /* 🎨 Responsive */
     @media (max-width: 768px) {
       h1 {
         font-size: 36px;
@@ -85,9 +108,9 @@
         font-size: 18px;
       }
 
-      .blast {
-        width: 100px;
-        height: 100px;
+      .balloon {
+        width: 40px;
+        height: 60px;
       }
     }
 
@@ -99,127 +122,36 @@
       p {
         font-size: 16px;
       }
-
-      .wish-container {
-        padding: 10px;
-      }
-
-      .blast {
-        width: 80px;
-        height: 80px;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="blast"></div>
-
   <div class="wish-container">
     <h1>🎉 Happy Birthday! 🎉</h1>
-    <p>Wishing you joy, love, and endless fun on your special day! 🥳💖</p>
+    <p>Wishing you joy, laughter, and a day filled with love! 🥰</p>
   </div>
 
-  <canvas id="fireworks"></canvas>
-
+  <!-- 🎈 Balloons -->
   <script>
-    const canvas = document.getElementById('fireworks');
-    const ctx = canvas.getContext('2d');
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    });
-
-    const fireworks = [];
-    const particles = [];
-
-    function random(min, max) {
-      return Math.random() * (max - min) + min;
+    const colors = ['#f06292', '#ba68c8', '#4fc3f7', '#81c784', '#ffb74d'];
+    for (let i = 0; i < 20; i++) {
+      const balloon = document.createElement('div');
+      balloon.classList.add('balloon');
+      balloon.style.left = `${Math.random() * 100}%`;
+      balloon.style.background = `radial-gradient(circle at 30% 30%, ${colors[i % colors.length]}, ${colors[(i+1) % colors.length]})`;
+      balloon.style.animationDelay = `${Math.random() * 5}s`;
+      document.body.appendChild(balloon);
     }
 
-    function Firework() {
-      this.x = w / 2;
-      this.y = h;
-      this.targetX = random(100, w - 100);
-      this.targetY = random(50, h / 2);
-      this.speed = 2;
-      this.angle = Math.atan2(this.targetY - this.y, this.targetX - this.x);
-      this.distanceToTarget = Math.hypot(this.targetX - this.x, this.targetY - this.y);
-      this.distanceTraveled = 0;
+    // ✨ Stars
+    for (let i = 0; i < 50; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 2}s`;
+      document.body.appendChild(star);
     }
-
-    Firework.prototype.update = function() {
-      const vx = Math.cos(this.angle) * this.speed;
-      const vy = Math.sin(this.angle) * this.speed;
-      this.x += vx;
-      this.y += vy;
-      this.distanceTraveled += Math.hypot(vx, vy);
-      if (this.distanceTraveled >= this.distanceToTarget) {
-        for (let i = 0; i < 30; i++) {
-          particles.push(new Particle(this.targetX, this.targetY));
-        }
-        return true;
-      }
-      return false;
-    };
-
-    Firework.prototype.draw = function() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-      ctx.fillStyle = 'white';
-      ctx.fill();
-    };
-
-    function Particle(x, y) {
-      this.x = x;
-      this.y = y;
-      this.angle = random(0, 2 * Math.PI);
-      this.speed = random(1, 10);
-      this.friction = 0.95;
-      this.gravity = 0.5;
-      this.hue = random(0, 360);
-      this.alpha = 1;
-      this.decay = random(0.01, 0.02);
-    }
-
-    Particle.prototype.update = function() {
-      this.speed *= this.friction;
-      this.x += Math.cos(this.angle) * this.speed;
-      this.y += Math.sin(this.angle) * this.speed + this.gravity;
-      this.alpha -= this.decay;
-      return this.alpha <= 0;
-    };
-
-    Particle.prototype.draw = function() {
-      ctx.globalAlpha = this.alpha;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-      ctx.fillStyle = `hsl(${this.hue}, 100%, 50%)`;
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    };
-
-    function animate() {
-      requestAnimationFrame(animate);
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-      ctx.fillRect(0, 0, w, h);
-
-      if (Math.random() < 0.05) fireworks.push(new Firework());
-
-      for (let i = fireworks.length - 1; i >= 0; i--) {
-        if (fireworks[i].update()) fireworks.splice(i, 1);
-        else fireworks[i].draw();
-      }
-
-      for (let i = particles.length - 1; i >= 0; i--) {
-        if (particles[i].update()) particles.splice(i, 1);
-        else particles[i].draw();
-      }
-    }
-
-    animate();
   </script>
 </body>
 </html>

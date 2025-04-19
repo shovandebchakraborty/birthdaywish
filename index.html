@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Surprise</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(120deg, #fbc2eb, #a6c1ee);
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: 0.3s ease;
+    }
+
+    h1 {
+      color: #ff4081;
+      margin-bottom: 20px;
+    }
+
+    input[type="password"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      width: 250px;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 25px;
+      border: none;
+      background-color: #ff4081;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #e91e63;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Enter Your Secret Code 🎉</h1>
+    <input type="password" id="codeInput" placeholder="Type code here" />
+    <br>
+    <button onclick="checkCode()">Unlock Surprise</button>
+  </div>
+
+  <script>
+    function checkCode() {
+      const secret = "happy123";
+      const userInput = document.getElementById("codeInput").value.trim();
+
+      if (userInput === secret) {
+        window.location.href = "birthday.html";
+      } else {
+        alert("Oops! Wrong code. Try again!");
+      }
+    }
+  </script>
+</body>
+</html>
